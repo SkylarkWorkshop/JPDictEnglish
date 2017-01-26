@@ -1,0 +1,267 @@
+﻿using MVVMSidekick.Views;
+using System;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
+using JapaneseDict.GUI.ViewModels;
+using Windows.Phone.UI.Input;
+using JapaneseDict.Models;
+using Windows.UI.Popups;
+using System.Reactive.Linq;
+using Windows.UI.Text;
+using Windows.System.Profile;
+using JapaneseDict.QueryEngine.Models.JmdictModels;
+
+
+
+// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+
+namespace JapaneseDict.GUI
+{
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class MainPage : MVVMPage
+    {
+
+        public MainPage()
+        {
+
+            this.InitializeComponent();
+            if (Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
+            {
+                HardwareButtons.BackPressed += HardwareButtons_BackPressed;
+
+            }
+            this.NavigationCacheMode = NavigationCacheMode.Required;
+            this.RegisterPropertyChangedCallback(ViewModelProperty, (_, __) =>
+            {
+                StrongTypeViewModel = this.ViewModel as MainPage_Model;
+            });
+            StrongTypeViewModel = this.ViewModel as MainPage_Model;
+            //SetUpPageAnimation();
+        }
+        //private void SetUpPageAnimation()
+        //{
+        //    TransitionCollection collection = new TransitionCollection();
+        //    NavigationThemeTransition theme = new NavigationThemeTransition();
+
+        //    var info = new DrillInNavigationTransitionInfo();
+
+        //    theme.DefaultNavigationTransitionInfo = info;
+        //    collection.Add(theme);
+        //    this.Transitions = collection;
+        //}
+        private void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
+        {
+            e.Handled = false;
+        }
+
+        public MainPage_Model StrongTypeViewModel
+        {
+            get { return (MainPage_Model)GetValue(StrongTypeViewModelProperty); }
+            set { SetValue(StrongTypeViewModelProperty, value); }
+        }
+
+        public static readonly DependencyProperty StrongTypeViewModelProperty =
+                    DependencyProperty.Register("StrongTypeViewModel", typeof(MainPage_Model), typeof(MainPage), new PropertyMetadata(null));
+
+        private void shareEverydaySentence_Btn_Click(object sender, RoutedEventArgs e)
+        {
+            JapaneseDict.Util.SharingHelper.ShowShareUI("Sentence sharing", ((Button)sender).Tag.ToString());
+        }
+
+        private async void showNotesEverydaySentence_Btn_Click(object sender, RoutedEventArgs e)
+        {
+            if (((Button)sender).Tag != null)
+            {
+                await new MessageDialog(((Button)sender).Tag.ToString().Replace("<br />", "\n"), "Comment").ShowAsync();
+            }
+
+        }
+
+        private async void playEverydaySentence_Btn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                StopNHKRadiosPlay_Btn.Visibility = Visibility.Collapsed;
+                ((Button)sender).IsEnabled = false;
+                mediaEle.Stop();
+                mediaEle.Position = TimeSpan.FromMilliseconds(0);
+                mediaEle.Source = new Uri(((Button)sender).Tag.ToString(), UriKind.Absolute);
+                mediaEle.Play();
+                ((Button)sender).IsEnabled = true;
+
+            }
+            catch
+            {
+                ((Button)sender).IsEnabled = true;
+                await new MessageDialog("Please check your network connection.", "Failed").ShowAsync();
+            }
+
+
+        }
+        MainPage_Model vm = new MainPage_Model();
+        private void MVVMPage_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            Observable.FromEventPattern<AutoSuggestBoxTextChangedEventArgs>(this.QueryBox, "TextChanged").Throttle(TimeSpan.FromMilliseconds(900)).Subscribe(async x =>
+                            await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+                             {
+                                 this.QueryBox.ItemsSource = await QueryEngine.JmdictQueryEngine.QueryForPreviewAsync(QueryBox.Text);
+                                 //await Task.Delay(500);
+                             }));
+            this.QueryBox.Tag = null;
+        }
+
+        private void noteBook_frame_Loaded(object sender, RoutedEventArgs e)
+        {
+            noteBook_frame.Navigate(typeof(NotebookPage));
+        }
+
+
+        private void settings_frame_Loaded(object sender, RoutedEventArgs e)
+        {
+            settings_frame.Navigate(typeof(SettingsPage));
+        }
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            this.mediaEle.Source = null;
+            this.mediaEle.Stop();
+            StopNHKRadiosPlay_Btn.Visibility = Visibility.Collapsed;
+            this.listeningPosition_Slider.Visibility = Visibility.Collapsed;
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            
+            base.OnNavigatedTo(e);
+            this.mediaEle.Stop();
+
+        }
+        private async void playNHKRadio_Btn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ResumeNHKRadiosPlay_Btn.Visibility = Visibility.Collapsed;
+                mediaEle.Stop();
+                var currentBtn = ((Button)sender);
+
+                var tag = currentBtn.Tag.ToString();
+                if (!string.IsNullOrEmpty(tag))
+                {
+                    mediaEle.Source = new Uri(tag, UriKind.Absolute);
+                    mediaEle.Position = TimeSpan.FromMilliseconds(0);
+
+                    mediaEle.Play() ;
+
+                    StopNHKRadiosPlay_Btn.Visibility = Visibility.Visible;
+                    listeningPosition_Slider.Visibility = Visibility.Visible;
+                }
+            }
+            catch(Exception ex)
+            {
+                await new MessageDialog("Detail:\n\n" + ex.ToString() + "\n\nYou can send the error data and your screenshot to us by clicking the 'feedback' button in settings page.", "Error").ShowAsync();
+            }
+           
+        }
+        private void translate_frame_Loaded(object sender, RoutedEventArgs e)
+        {
+            translate_frame.Navigate(typeof(TranslationPage));
+        }
+
+        private void ShowFastListeningList_Btn_Click(object sender, RoutedEventArgs e)
+        {
+            ((HyperlinkButton)sender).SetValue(HyperlinkButton.FontWeightProperty, FontWeights.ExtraBold);
+            ShowSlowListeningList_Btn.FontWeight = FontWeights.Light;
+            ShowNormalListeningList_Btn.FontWeight = FontWeights.Light;
+            listeningFast_List.Visibility = Visibility.Visible;
+            listeningNormal_List.Visibility = Visibility.Collapsed;
+            listeningSlow_List.Visibility = Visibility.Collapsed;
+        }
+
+        private void ShowNormalListeningList_Btn_Click(object sender, RoutedEventArgs e)
+        {
+            ((HyperlinkButton)sender).SetValue(HyperlinkButton.FontWeightProperty, FontWeights.ExtraBold);
+            ShowSlowListeningList_Btn.FontWeight = FontWeights.Light;
+            ShowFastListeningList_Btn.FontWeight = FontWeights.Light;
+            listeningFast_List.Visibility = Visibility.Collapsed;
+            listeningNormal_List.Visibility = Visibility.Visible;
+            listeningSlow_List.Visibility = Visibility.Collapsed;
+        }
+
+        private void ShowSlowListeningList_Btn_Click(object sender, RoutedEventArgs e)
+        {
+            ((HyperlinkButton)sender).SetValue(HyperlinkButton.FontWeightProperty, FontWeights.ExtraBold);
+            ShowNormalListeningList_Btn.FontWeight = FontWeights.Light;
+            ShowFastListeningList_Btn.FontWeight = FontWeights.Light;
+            listeningFast_List.Visibility = Visibility.Collapsed;
+            listeningNormal_List.Visibility = Visibility.Visible;
+            listeningSlow_List.Visibility = Visibility.Collapsed;
+        }
+
+        private void StopNHKRadiosPlay_Btn_Click(object sender, RoutedEventArgs e)
+        {
+            mediaEle.Pause();
+            StopNHKRadiosPlay_Btn.Visibility = Visibility.Collapsed;
+            ResumeNHKRadiosPlay_Btn.Visibility = Visibility.Visible;
+            //listeningPosition_Slider.Visibility = Visibility.Collapsed;
+        }
+
+        private void QueryBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            PreviewResult suggest = args.SelectedItem as PreviewResult;
+            if (suggest == null)
+                return;
+
+            if (suggest.Result == "No local definitions found.")
+            {
+                sender.Tag = new SearchTerm() { EntryId = -1, Keyword = suggest.JpChar,IsFromSuggestion=true };
+            }
+            else
+            {
+                sender.Tag = new SearchTerm() { EntryId = suggest.EntryId, Keyword = suggest.JpChar,IsFromSuggestion=true };
+            }
+            
+        }
+
+        private void adControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!(AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile"))
+            {
+                ad.Margin = new Thickness(24, 12, 0, 24);
+            }
+        }
+
+        private void mediaEle_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            StopNHKRadiosPlay_Btn.Visibility = Visibility.Collapsed;
+            listeningPosition_Slider.Visibility = Visibility.Collapsed;
+        }
+
+        private void QueryBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            if (!string.IsNullOrWhiteSpace(sender.Text))
+            {
+                if(sender.Tag is SearchTerm)
+                {
+                    if((sender.Tag as SearchTerm).IsFromSuggestion!=true)
+                    {
+                        sender.Tag = new SearchTerm() { EntryId = -1, Keyword = sender.Text,IsFromSuggestion=false };
+                    }
+                }
+                else
+                {
+                    sender.Tag = new SearchTerm() { EntryId = -1, Keyword = sender.Text, IsFromSuggestion = false };
+                }
+            }
+        }
+
+        private void ResumeNHKRadiosPlay_Btn_Click(object sender, RoutedEventArgs e)
+        {
+            mediaEle.Play();
+            (sender as HyperlinkButton).Visibility = Visibility.Collapsed;
+            StopNHKRadiosPlay_Btn.Visibility = Visibility.Visible;
+        }
+    }
+}
