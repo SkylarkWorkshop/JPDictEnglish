@@ -28,11 +28,11 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Reb}" HorizontalAlignment="Left" Style="{StaticResource HeaderTextBlockStyle}" IsHitTestVisible="false" TextWrapping="Wrap" VerticalAlignment="Top" Margin="20,10,30,0" FontWeight="Normal" Foreground="#FF00B294" FontSize="32" IsTextSelectionEnabled="True" SelectionHighlightColor="#FF00B294"/>
+                                    <TextBlock Text="{Binding Reb}" FontFamily="Yu Gothic UI" HorizontalAlignment="Left" Style="{StaticResource HeaderTextBlockStyle}" IsHitTestVisible="false" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,10,30,0" FontWeight="Normal" Foreground="#FF00B294" FontSize="32" IsTextSelectionEnabled="True" SelectionHighlightColor="#FF00B294"/>
                                     <ListView HorizontalAlignment="Right" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollMode="Disabled" ItemContainerStyle="{StaticResource HorizontalStyle}" Visibility="{Binding RestrVis}" ItemsSource="{Binding Restrs}" SelectionMode="None" UseSystemFocusVisuals="False">
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding }" HorizontalAlignment="Left" Style="{StaticResource HeaderTextBlockStyle}" IsHitTestVisible="false" TextWrapping="Wrap" VerticalAlignment="Top" Margin="10,10,0,0" FontWeight="Normal" Foreground="#FF00B294" FontSize="32" IsTextSelectionEnabled="True" SelectionHighlightColor="#FF00B294"/>
+                                                <TextBlock Text="{Binding }" FontFamily="Yu Gothic UI" HorizontalAlignment="Left" Style="{StaticResource HeaderTextBlockStyle}" IsHitTestVisible="false" TextWrapping="Wrap" VerticalAlignment="Top" Margin="10,10,0,0" FontWeight="Normal" Foreground="#FF00B294" FontSize="32" IsTextSelectionEnabled="True" SelectionHighlightColor="#FF00B294"/>
                                             </DataTemplate>
                                         </ListView.ItemTemplate>
                                         <ListView.ItemsPanel>
@@ -44,7 +44,7 @@
                                     <ListView HorizontalAlignment="Right" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollMode="Disabled" ItemContainerStyle="{StaticResource HorizontalStyle}" Visibility="{Binding KebsVis}" ItemsSource="{Binding Kebs}" SelectionMode="None" UseSystemFocusVisuals="False">
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Keb}" HorizontalAlignment="Left" Style="{StaticResource HeaderTextBlockStyle}" IsHitTestVisible="false" TextWrapping="Wrap" VerticalAlignment="Top" Margin="10,10,0,0" FontWeight="Normal" Foreground="#FF00B294" FontSize="32" IsTextSelectionEnabled="True" SelectionHighlightColor="#FF00B294"/>
+                                                <TextBlock Text="{Binding Keb}" FontFamily="Yu Gothic UI" HorizontalAlignment="Left" Style="{StaticResource HeaderTextBlockStyle}" IsHitTestVisible="false" TextWrapping="Wrap" VerticalAlignment="Top" Margin="10,10,0,0" FontWeight="Normal" Foreground="#FF00B294" FontSize="32" IsTextSelectionEnabled="True" SelectionHighlightColor="#FF00B294"/>
                                             </DataTemplate>
                                         </ListView.ItemTemplate>
                                         <ListView.ItemsPanel>
@@ -59,7 +59,7 @@
                     </ListView>
                     <StackPanel Orientation="Vertical">
                         <StackPanel Orientation="Horizontal">
-                            <Button Name="AddToNote_Btn" Click="AddToNote_Btn_Click" Tag="{Binding ElementName=RemoveFromNote_Btn}" Command="{Binding CommandAddToNotebook,Source={StaticResource ResourceKey=DesignVM}}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,20,0,0" FontSize="29.333" Height="44" Foreground="White" Background="#FF00B294">
+                            <Button Name="AddToNote_Btn" Click="AddToNote_Btn_Click" Tag="{Binding ElementName=RemoveFromNote_Btn}" Command="{Binding CommandAddToNotebook,Source={StaticResource ResourceKey=DesignVM}}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,20,0,0" FontSize="29.333" Height="44" Foreground="White" Background="#FF00B294">
                                 <TextBlock Text="" FontFamily="Segoe MDL2 Assets" FontSize="24"></TextBlock>
                             </Button>
                             <Button Name="RemoveFromNote_Btn" Click="RemoveFromNote_Btn_Click" Tag="{Binding ElementName=AddToNote_Btn}" Command="{Binding CommandRemoveFromNotebook,Source={StaticResource ResourceKey=DesignVM}}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,20,0,0" FontSize="29.333" Height="44" Foreground="White" Background="#FF00B294">
@@ -71,7 +71,7 @@
                     <ListView ItemsSource="{Binding Sense}" SelectionMode="None" UseSystemFocusVisuals="False" ItemContainerStyle="{StaticResource NewsListStyle}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Margin="20,10,0,0">
+                                <StackPanel Margin="0,10,0,0">
                                     <Grid>
                                         <Rectangle VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,12,0,0" Width="8" Height="8" Fill="#FF00B294"></Rectangle>
                                         <TextBlock VerticalAlignment="Top" Margin="20,0,0,0" FontSize="20" Text="{Binding Gloss}" Name="glossTbk" Foreground="Black" TextWrapping="WrapWholeWords"></TextBlock>

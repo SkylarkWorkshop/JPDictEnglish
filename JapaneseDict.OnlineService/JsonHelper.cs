@@ -53,11 +53,11 @@ namespace JapaneseDict.OnlineService
             }
             catch(HttpRequestException)
             {
-                return "Connection error";
+                return "出现连接错误";
             }
             catch(Exception)
             {
-                return "Connection error";
+                return "出现连接错误";
             }
         }
         public static async Task<EverydaySentence> GetEverydaySentence(DateTime date,int index)
@@ -70,7 +70,7 @@ namespace JapaneseDict.OnlineService
             }
             catch(Exception)
             {
-                return new EverydaySentence() { JpText = "ERROR", CnText = "Please make sure that you have connected to the Internet.", BackgroundImage = new BitmapImage(new Uri($"ms-appx:///Assets/EverydaySentenceBackground/{index}.jpg", UriKind.RelativeOrAbsolute)) };
+                return new EverydaySentence() { JpText = "出现错误", CnText = "请确认您是否已连接到互联网", BackgroundImage = new BitmapImage(new Uri($"ms-appx:///Assets/EverydaySentenceBackground/{index}.jpg", UriKind.RelativeOrAbsolute)) };
             }
             
         }
@@ -84,7 +84,7 @@ namespace JapaneseDict.OnlineService
             }
             catch (Exception)
             {
-                return new EverydaySentence() { JpText = "ERROR", CnText = "Please make sure that you have connected to the Internet.", BackgroundImage = new BitmapImage(new Uri($"ms-appx:///Assets/EverydaySentenceBackground/{index}.jpg", UriKind.RelativeOrAbsolute)) };
+                return new EverydaySentence() { JpText = "出现错误", CnText = "请确认您是否已连接到互联网", BackgroundImage = new BitmapImage(new Uri($"ms-appx:///Assets/EverydaySentenceBackground/{index}.jpg", UriKind.RelativeOrAbsolute)) };
             }
         }
         public static async Task<NHKNews> GetNHKNews(int index)
@@ -99,11 +99,11 @@ namespace JapaneseDict.OnlineService
             }
             catch (HttpRequestException)
             {
-                return new NHKNews() { Title = "Connection error", IconPath=new Uri("ms-appx:///Assets/connectionerr.png",UriKind.RelativeOrAbsolute)};
+                return new NHKNews() { Title = "出现连接错误",IconPath=new Uri("ms-appx:///Assets/connectionerr.png",UriKind.RelativeOrAbsolute)};
             }
             catch (Exception)
             {
-                return new NHKNews() { Title = "Connection error", IconPath=new Uri("ms-appx:///Assets/connectionerr.png", UriKind.RelativeOrAbsolute) };
+                return new NHKNews() { Title = "出现连接错误",IconPath=new Uri("ms-appx:///Assets/connectionerr.png", UriKind.RelativeOrAbsolute) };
             }
         }
         public static async Task<NHKRadios> GetNHKRadios(int index, string speed)
@@ -117,11 +117,11 @@ namespace JapaneseDict.OnlineService
             }
             catch (HttpRequestException)
             {
-                return new NHKRadios() { Title = "Connection error", StartDate = "Please make sure that you have connected to the Internet." };
+                return new NHKRadios() { Title = "出现连接错误", StartDate = "请确认您是否已连接到互联网" };
             }
             catch (Exception)
             {
-                return new NHKRadios() { Title = "Connection error", StartDate = "Please make sure that you have connected to the Internet." };
+                return new NHKRadios() { Title = "出现连接错误", StartDate = "请确认您是否已连接到互联网" };
             }
         }
         public static async Task<int> GetNHKRadiosItemsCount()

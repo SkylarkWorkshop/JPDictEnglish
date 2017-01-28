@@ -93,9 +93,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <Content Include="ApplicationInsights.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="dict.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -107,6 +104,7 @@
     <Content Include="testdb.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="update.db" />
     <PRIResource Include="VersionResources.resw" />
   </ItemGroup>
   <ItemGroup>
@@ -114,15 +112,20 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Extensions\ItemsControlExtension.cs" />
+    <Compile Include="Extensions\ListExtension.cs" />
     <Compile Include="FeedbackPage.xaml.cs">
       <DependentUpon>FeedbackPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\BooleanToVisibilityNegateConverter.cs" />
+    <Compile Include="Helpers\BoolNegativeConverter.cs" />
     <Compile Include="Helpers\BoolToVisibilityConverter.cs" />
     <Compile Include="Helpers\MediaPositionConverter.cs" />
     <Compile Include="Helpers\StringEquationToBoolConverter.cs" />
-    <Compile Include="HiraganaRecitePage.xaml.cs">
-      <DependentUpon>HiraganaRecitePage.xaml</DependentUpon>
+    <Compile Include="KanaFlashcardPage.xaml.cs">
+      <DependentUpon>KanaFlashcardPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="KanjiFlashcardPage.xaml.cs">
+      <DependentUpon>KanjiFlashcardPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -139,7 +142,8 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Startups\FeedbackPage.cs" />
-    <Compile Include="Startups\HiraganaRecitePage.cs" />
+    <Compile Include="Startups\KanaFlashcardPage.cs" />
+    <Compile Include="Startups\KanjiFlashcardPage.cs" />
     <Compile Include="Startups\NotebookPage.cs" />
     <Compile Include="Startups\ResultPage.cs" />
     <Compile Include="Startups\SettingsPage.cs" />
@@ -150,6 +154,8 @@
     </Compile>
     <Compile Include="ViewModels\FeedbackPage_Model.cs" />
     <Compile Include="ViewModels\HiraganaRecitePage_Model.cs" />
+    <Compile Include="ViewModels\KanaFlashcardPage_Model.cs" />
+    <Compile Include="ViewModels\KanjiFlashcardPage_Model.cs" />
     <Compile Include="ViewModels\MainPage_Model.cs" />
     <Compile Include="ViewModels\NotebookPage_Model.cs" />
     <Compile Include="ViewModels\ResultPage_Model.cs" />
@@ -206,8 +212,8 @@
     <SDKReference Include="Microsoft.VCLibs, Version=14.0">
       <Name>Visual C++ 2015 Runtime for Universal Windows Platform Apps</Name>
     </SDKReference>
-    <SDKReference Include="SQLite.UAP.2015, Version=3.9.2">
-      <Name>SQLite for Universal App Platform</Name>
+    <SDKReference Include="SQLite.UWP.2015, Version=3.16.2">
+      <Name>SQLite for Universal Windows Platform</Name>
     </SDKReference>
     <SDKReference Include="WindowsMobile, Version=10.0.10240.0">
       <Name>Windows Mobile Extensions for the UWP</Name>
@@ -224,9 +230,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="HiraganaRecitePage.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="KanaFlashcardPage.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="KanjiFlashcardPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>

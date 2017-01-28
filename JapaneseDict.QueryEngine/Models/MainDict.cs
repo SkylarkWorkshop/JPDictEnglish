@@ -19,7 +19,7 @@ namespace JapaneseDict.Models
             get
             {
                 
-                if (string.IsNullOrEmpty(_Kana) && Explanation != "No local definitions found.")
+                if (string.IsNullOrEmpty(_Kana) && Explanation != "没有本地释义")
                     return JpChar.Replace("·","");
                 else if (!string.IsNullOrEmpty(_Kana))
                     return _Kana.Replace("·", "");

@@ -16,16 +16,16 @@
     <Page.Resources>
         <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
         <x:String x:Key="AppName">My Application</x:String>
-        <vm:MainPage_Model x:Key="DesignVM"/>
         <converter:DurationToDouble x:Key="durationConverter"/>
         <converter:TimeSpanToDouble x:Key="timespanConverter"/>
+        <vm:MainPage_Model x:Key="DesignVM"/>
         <DataTemplate x:Key="DataTemplate2">
             <Grid>
                 <Image Source="{Binding BackgroundImage}" Stretch="UniformToFill" Height="200" VerticalAlignment="Top"></Image>
                 <StackPanel>
                     <StackPanel>
                         <ScrollViewer Height="60" VerticalScrollBarVisibility="Hidden" Margin="0,20,0,0">
-                            <TextBlock Text="{Binding JpText}" TextAlignment="Center" Foreground="White" FontSize="21.333" TextWrapping="WrapWholeWords" Margin="10,0,10,0"></TextBlock>
+                            <TextBlock FontFamily="Yu Gothic UI" Text="{Binding JpText}" TextAlignment="Center" Foreground="White" FontSize="21.333" TextWrapping="WrapWholeWords" Margin="10,0,10,0"></TextBlock>
                         </ScrollViewer>
                         <ScrollViewer Height="40" VerticalScrollBarVisibility="Hidden" Margin="0,15,0,0">
                             <TextBlock Text="{Binding CnText}" TextAlignment="Center" Foreground="#BFFFFFFF" FontSize="13.333" Margin="20,0,20,0" TextWrapping="WrapWholeWords"></TextBlock>
@@ -63,6 +63,147 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="SliderStyle1" TargetType="Slider">
+            <Setter Property="Background" Value="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"/>
+            <Setter Property="BorderThickness" Value="{ThemeResource SliderBorderThemeThickness}"/>
+            <Setter Property="Foreground" Value="{ThemeResource SystemControlHighlightAccentBrush}"/>
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+            <Setter Property="ManipulationMode" Value="None"/>
+            <Setter Property="UseSystemFocusVisuals" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Slider">
+                        <Grid Margin="{TemplateBinding Padding}">
+                            <Grid.Resources>
+                                <Style x:Key="SliderThumbStyle" TargetType="Thumb">
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Background" Value="{ThemeResource SystemControlForegroundAccentBrush}"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" CornerRadius="4"/>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Grid.Resources>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="HorizontalThumb">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightChromeHighBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="VerticalThumb">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightChromeHighBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="HeaderContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledBaseLowBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="HorizontalDecreaseRect">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledChromeDisabledHighBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="HorizontalTrackRect">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledChromeDisabledHighBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="VerticalDecreaseRect">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledChromeDisabledHighBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="VerticalTrackRect">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledChromeDisabledHighBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="HorizontalThumb">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledChromeDisabledHighBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="VerticalThumb">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledChromeDisabledHighBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="TopTickBar">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledBaseLowBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="BottomTickBar">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledBaseLowBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="LeftTickBar">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledBaseLowBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="RightTickBar">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledBaseLowBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="HorizontalTrackRect">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="VerticalTrackRect">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="HorizontalThumb">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightChromeAltLowBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="VerticalThumb">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightChromeAltLowBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentPresenter x:Name="HeaderContentPresenter" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}" FontWeight="{ThemeResource SliderHeaderThemeFontWeight}" Margin="{ThemeResource SliderHeaderThemeMargin}" TextWrapping="Wrap" Visibility="Collapsed" x:DeferLoadStrategy="Lazy"/>
+                            <Grid x:Name="SliderContainer" Background="Transparent" Control.IsTemplateFocusTarget="True" Grid.Row="1">
+                                <Grid x:Name="HorizontalTemplate" MinHeight="44">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="18"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="18"/>
+                                    </Grid.RowDefinitions>
+                                    <Rectangle x:Name="HorizontalTrackRect" Grid.ColumnSpan="3" Fill="{TemplateBinding Background}" Height="{ThemeResource SliderTrackThemeHeight}" Grid.Row="1"/>
+                                    <Rectangle x:Name="HorizontalDecreaseRect" Fill="{TemplateBinding Foreground}" Grid.Row="1"/>
+                                    <TickBar x:Name="TopTickBar" Grid.ColumnSpan="3" Fill="{ThemeResource SystemControlForegroundBaseMediumLowBrush}" Height="{ThemeResource SliderOutsideTickBarThemeHeight}" Margin="0,0,0,4" Visibility="Collapsed" VerticalAlignment="Bottom"/>
+                                    <TickBar x:Name="HorizontalInlineTickBar" Grid.ColumnSpan="3" Fill="{ThemeResource SystemControlBackgroundAltHighBrush}" Height="{ThemeResource SliderTrackThemeHeight}" Grid.Row="1" Visibility="Collapsed"/>
+                                    <TickBar x:Name="BottomTickBar" Grid.ColumnSpan="3" Fill="{ThemeResource SystemControlForegroundBaseMediumLowBrush}" Height="{ThemeResource SliderOutsideTickBarThemeHeight}" Margin="0,4,0,0" Grid.Row="2" Visibility="Collapsed" VerticalAlignment="Top"/>
+                                    <Thumb x:Name="HorizontalThumb" AutomationProperties.AccessibilityView="Raw" Background="#00c9a7" Grid.Column="1" DataContext="{TemplateBinding Value}" Height="24" Grid.Row="0" Grid.RowSpan="3" Style="{StaticResource SliderThumbStyle}" Width="8"/>
+                                </Grid>
+                                <Grid x:Name="VerticalTemplate" MinWidth="44" Visibility="Collapsed">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="18"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="18"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Rectangle x:Name="VerticalTrackRect" Grid.Column="1" Fill="{TemplateBinding Background}" Grid.RowSpan="3" Width="{ThemeResource SliderTrackThemeHeight}"/>
+                                    <Rectangle x:Name="VerticalDecreaseRect" Grid.Column="1" Fill="{TemplateBinding Foreground}" Grid.Row="2"/>
+                                    <TickBar x:Name="LeftTickBar" Fill="{ThemeResource SystemControlForegroundBaseMediumLowBrush}" HorizontalAlignment="Right" Margin="0,0,4,0" Grid.RowSpan="3" Visibility="Collapsed" Width="{ThemeResource SliderOutsideTickBarThemeHeight}"/>
+                                    <TickBar x:Name="VerticalInlineTickBar" Grid.Column="1" Fill="{ThemeResource SystemControlBackgroundAltHighBrush}" Grid.RowSpan="3" Visibility="Collapsed" Width="{ThemeResource SliderTrackThemeHeight}"/>
+                                    <TickBar x:Name="RightTickBar" Grid.Column="2" Fill="{ThemeResource SystemControlForegroundBaseMediumLowBrush}" HorizontalAlignment="Left" Margin="4,0,0,0" Grid.RowSpan="3" Visibility="Collapsed" Width="{ThemeResource SliderOutsideTickBarThemeHeight}"/>
+                                    <Thumb x:Name="VerticalThumb" AutomationProperties.AccessibilityView="Raw" Background="{ThemeResource SystemControlForegroundAccentBrush}" Grid.ColumnSpan="3" Grid.Column="0" DataContext="{TemplateBinding Value}" Height="8" Grid.Row="1" Style="{StaticResource SliderThumbStyle}" Width="24"/>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
 
     </Page.Resources>
@@ -85,36 +226,36 @@
                         <FontIcon Glyph="&#xE10F;" Width="25" Margin="0,0,5,0"></FontIcon>
                         <StackPanel Height="48">
                             <TextBlock FontSize="24">Home</TextBlock>
-                            <TextBlock FontSize="8">ホームページ</TextBlock>
+                            <TextBlock FontSize="8" FontFamily="Yu Gothic UI">ホームページ</TextBlock>
                         </StackPanel>
                     </StackPanel>
                 </PivotItem.Header>
-                <ScrollViewer RequestedTheme="Light" VerticalScrollBarVisibility="Auto" Margin="-12,-11,-12,0" Style="{StaticResource ScrollViewerStyle1}">
+                <ScrollViewer RequestedTheme="Light" VerticalScrollBarVisibility="Auto" Margin="-12,-12,-12,0" Style="{StaticResource ScrollViewerStyle1}">
                     <Grid>
                         <ProgressRing IsActive="True" Foreground="#00b294" VerticalAlignment="Top" Margin="0,88,0,0"></ProgressRing>
-                        <FlipView VerticalAlignment="Top" ItemsSource="{Binding EverdaySentenceList}" ItemTemplate="{StaticResource DataTemplate2}" Height="200"></FlipView>
+                        <FlipView VerticalAlignment="Top" ItemsSource="{Binding EverdaySentenceList}" ItemTemplate="{StaticResource DataTemplate2}" Height="200"/>
 
                         <ScrollViewer Margin="0,200,-12,0" VerticalAlignment="Top" RequestedTheme="Light" VerticalScrollBarVisibility="Auto">
                             <StackPanel>
                                 <StackPanel Name="newsPanel" HorizontalAlignment="Left">
                                     <StackPanel Margin="24,24,0,0" Height="48" HorizontalAlignment="Left">
                                         <TextBlock FontSize="24">NHK News</TextBlock>
-                                        <TextBlock FontSize="8">NHK ニュース</TextBlock>
+                                        <TextBlock FontSize="8" FontFamily="Yu Gothic UI">NHK ニュース</TextBlock>
                                     </StackPanel>
                                     <ListView SelectionMode="None" UseSystemFocusVisuals="False" Margin="4,8,0,0" ItemsSource="{Binding NHKNews}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollMode="Disabled" ItemContainerStyle="{StaticResource NewsListStyle}">
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
-                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="12,0,0,0">
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="12,0,24,0">
                                                     <Grid>
                                                         <ProgressRing IsActive="True" Foreground="#00b294"></ProgressRing>
                                                         <Image Source="{Binding IconPath}" Stretch="Uniform" Width="160" Height="80"></Image>
                                                     </Grid>
                                                     <StackPanel Orientation="Vertical" Margin="4,-4,8,0">
-                                                        <TextBlock Text="{Binding Title}" Style="{ThemeResource TitleTextBlockStyle}" FontSize="22" Foreground="Black"></TextBlock>
+                                                        <TextBlock FontFamily="Yu Gothic UI" Text="{Binding Title}" FontSize="22" Foreground="Black"></TextBlock>
                                                         <HyperlinkButton NavigateUri="{Binding Link}" Foreground="#00b294">
                                                             <StackPanel Orientation="Horizontal">
                                                                 <TextBlock Text="" FontFamily="Segoe MDL2 Assets" Margin="2,2,0,0"></TextBlock>
-                                                                <TextBlock Margin="8,0,0,0" Text="details"></TextBlock>
+                                                                <TextBlock Margin="8,0,0,0" Text="详细报道"></TextBlock>
                                                             </StackPanel>
                                                         </HyperlinkButton>
                                                     </StackPanel>
@@ -132,23 +273,23 @@
                                 <StackPanel Name="listeningPracPanel">
                                     <StackPanel Margin="24,24,0,0" Height="48" HorizontalAlignment="Left">
                                         <TextBlock FontSize="24">NHK Radio News</TextBlock>
-                                        <TextBlock FontSize="8">NHK ラジオニュース</TextBlock>
+                                        <TextBlock FontSize="8" FontFamily="Yu Gothic UI">NHK ラジオニュース</TextBlock>
                                     </StackPanel>
 
                                     <StackPanel Margin="24,0,24,0" Orientation="Horizontal" HorizontalAlignment="Left">
                                         <HyperlinkButton x:Name="ShowFastListeningList_Btn" Foreground="#FF00C9A7" FontWeight="ExtraBold" Click="ShowFastListeningList_Btn_Click">
                                             <HyperlinkButton.Content>
-                                                <TextBlock Text="🚀 FAST"></TextBlock>
+                                                <TextBlock Text="🚀 Fast"></TextBlock>
                                             </HyperlinkButton.Content>
                                         </HyperlinkButton>
                                         <HyperlinkButton x:Name="ShowNormalListeningList_Btn" Margin="12,0,0,0" Foreground="#FF00C9A7" FontWeight="Light" Click="ShowNormalListeningList_Btn_Click">
                                             <HyperlinkButton.Content>
-                                                <TextBlock Text="🚗 NORMAL"></TextBlock>
+                                                <TextBlock Text="🚗 Normal"></TextBlock>
                                             </HyperlinkButton.Content>
                                         </HyperlinkButton>
                                         <HyperlinkButton x:Name="ShowSlowListeningList_Btn" Margin="12,0,0,0" Foreground="#FF00C9A7" FontWeight="Light" Click="ShowSlowListeningList_Btn_Click">
                                             <HyperlinkButton.Content>
-                                                <TextBlock Text="🐌 SLOW"></TextBlock>
+                                                <TextBlock Text="🐌 Slow"></TextBlock>
                                             </HyperlinkButton.Content>
                                         </HyperlinkButton>
                                     </StackPanel>
@@ -169,7 +310,7 @@
                                                 </StackPanel>
                                             </HyperlinkButton.Content>
                                         </HyperlinkButton>
-                                        <Slider x:Name="listeningPosition_Slider" Margin="20,8,0,0" Visibility="Collapsed" Width="160" Value="{Binding ElementName=mediaEle, Path=Position, Converter={StaticResource timespanConverter},Mode=TwoWay}" Maximum="{Binding ElementName=mediaEle, Path=NaturalDuration, Converter={StaticResource durationConverter}}"></Slider>
+                                        <Slider x:Name="listeningPosition_Slider" Visibility="Collapsed" Margin="20,8,0,0" Foreground="#00c9a7"  Width="160" Value="{Binding ElementName=mediaEle, Path=Position, Converter={StaticResource timespanConverter},Mode=TwoWay}" Maximum="{Binding ElementName=mediaEle, Path=NaturalDuration, Converter={StaticResource durationConverter}}" Style="{StaticResource SliderStyle1}"></Slider>
                                     </StackPanel>
                                     <ListView Name="listeningFast_List"  SelectionMode="None" UseSystemFocusVisuals="False" Margin="0,8,0,0" ItemsSource="{Binding NHKListeningFast}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollMode="Disabled" ItemContainerStyle="{StaticResource NewsListStyle}">
                                         <ListView.ItemTemplate>
@@ -178,7 +319,7 @@
                                                     <StackPanel Name="playercontrolfast" Orientation="Horizontal">
                                                         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="" FontFamily="Segoe MDL2 Assets" FontSize="24" Foreground="White"></TextBlock>
                                                         <StackPanel Margin="8,0,0,0">
-                                                            <TextBlock Text="{Binding Title}" FontSize="21.333" Foreground="White"></TextBlock>
+                                                            <TextBlock FontFamily="Yu Gothic UI" Text="{Binding Title}" FontSize="21.333" Foreground="White"></TextBlock>
                                                             <TextBlock Text="{Binding StartDate}" Foreground="#B2FFFFFF"></TextBlock>
                                                         </StackPanel>
                                                     </StackPanel>
@@ -198,7 +339,7 @@
                                                     <StackPanel Name="playercontrolnormal" Orientation="Horizontal">
                                                         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="" FontFamily="Segoe MDL2 Assets" FontSize="24" Foreground="White"></TextBlock>
                                                         <StackPanel Margin="8,0,0,0">
-                                                            <TextBlock Text="{Binding Title}" FontSize="21.333" Foreground="White"></TextBlock>
+                                                            <TextBlock Text="{Binding Title}" FontFamily="Yu Gothic UI" FontSize="21.333" Foreground="White"></TextBlock>
                                                             <TextBlock Text="{Binding StartDate}" Foreground="#B2FFFFFF"></TextBlock>
                                                         </StackPanel>
                                                     </StackPanel>
@@ -218,7 +359,7 @@
                                                     <StackPanel Name="playercontrolslow" Orientation="Horizontal">
                                                         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="" FontFamily="Segoe MDL2 Assets" FontSize="24" Foreground="White"></TextBlock>
                                                         <StackPanel Margin="8,0,0,0">
-                                                            <TextBlock Text="{Binding Title}" FontSize="21.333" Foreground="White"></TextBlock>
+                                                            <TextBlock Text="{Binding Title}" FontFamily="Yu Gothic UI" FontSize="21.333" Foreground="White"></TextBlock>
                                                             <TextBlock Text="{Binding StartDate}" Foreground="#B2FFFFFF"></TextBlock>
                                                         </StackPanel>
                                                     </StackPanel>
@@ -235,7 +376,7 @@
                                 <StackPanel Name="adsPanel" HorizontalAlignment="Left">
                                     <StackPanel Margin="24,24,0,0" Height="48" HorizontalAlignment="Left">
                                         <TextBlock FontSize="24">Ads</TextBlock>
-                                        <TextBlock FontSize="8">こうこく</TextBlock>
+                                        <TextBlock FontSize="8" FontFamily="Yu Gothic UI">こうこく</TextBlock>
                                     </StackPanel>
 
                                     <StackPanel Margin="24,12,0,12">
@@ -254,7 +395,7 @@
                         <FontIcon Glyph="&#xE82D;" Width="25" Margin="0,0,5,0"></FontIcon>
                         <StackPanel Height="48">
                             <TextBlock FontSize="24">Wordlist</TextBlock>
-                            <TextBlock FontSize="8">たんごちょう</TextBlock>
+                            <TextBlock FontSize="8" FontFamily="Yu Gothic UI">たんごちょう</TextBlock>
                         </StackPanel>
                     </StackPanel>
                 </PivotItem.Header>
@@ -267,23 +408,109 @@
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                         <FontIcon Glyph="T" Width="25" Margin="0,0,5,2" FontFamily="Segoe Translator Symbol.ttf#Segoe Translator Symbol" FontSize="24"></FontIcon>
                         <StackPanel  Height="48">
-                            <TextBlock FontSize="24">Translation</TextBlock>
-                            <TextBlock FontSize="8">ほんやく</TextBlock>
+                            <TextBlock FontSize="24">Translate</TextBlock>
+                            <TextBlock FontSize="8" FontFamily="Yu Gothic UI">ほんやく</TextBlock>
                         </StackPanel>
                     </StackPanel>
                 </PivotItem.Header>
                 <Frame Name="translate_frame" Loaded="translate_frame_Loaded"></Frame>
             </PivotItem>
-            <PivotItem Margin="12,-8,0,0">
+            <PivotItem Margin="4,0,0,0">
                 <PivotItem.Header>
                     <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                         <FontIcon Glyph="" Width="25" Margin="0,0,5,0"></FontIcon>
                         <StackPanel Height="48">
                             <TextBlock FontSize="24">Flashcards</TextBlock>
-                            <TextBlock FontSize="8">フラッシュ カード</TextBlock>
+                            <TextBlock FontSize="8" FontFamily="Yu Gothic UI">フラッシュ カード</TextBlock>
                         </StackPanel>
                     </StackPanel>
                 </PivotItem.Header>
+                <GridView Margin="0" SelectionMode="None">
+                    <GridViewItem>
+                        <StackPanel Width="340" Margin="12" Background="White" BorderBrush="LightGray" BorderThickness="0.8" Orientation="Horizontal">
+                            <TextBlock FontFamily="Yu Gothic UI" Text="あ" VerticalAlignment="Center" Foreground="#00b294" FontSize="46" Margin="20,0,0,0"/>
+                            <StackPanel VerticalAlignment="Center" Margin="16,0,0,0">
+                                <TextBlock  Style="{StaticResource HeaderTextBlockStyle}" Text="Hiragana" Foreground="Black" FontSize="24" VerticalAlignment="Center" Margin="0,12,0,0" TextWrapping="Wrap"/>
+                                <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Text="ひらがな" Foreground="Gray" FontSize="16" VerticalAlignment="Center" Margin="0,0,0,12"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <Interactivity:Interaction.Behaviors>
+                            <Core:EventTriggerBehavior EventName="Tapped">
+                                <Core:InvokeCommandAction Command="{Binding CommandNavToKanaFlashcardPage}" CommandParameter="0"/>
+                            </Core:EventTriggerBehavior>
+                        </Interactivity:Interaction.Behaviors>
+                    </GridViewItem>
+                    <GridViewItem Margin="0">
+                        <StackPanel Width="340" Margin="12" Background="White" BorderBrush="LightGray" BorderThickness="0.8" Orientation="Horizontal">
+                            <TextBlock FontFamily="Yu Gothic UI" Text="カ" VerticalAlignment="Center" Foreground="#00b294" FontSize="46" Margin="20,0,0,0"/>
+                            <StackPanel VerticalAlignment="Center" Margin="16,0,0,0">
+                                <TextBlock  Style="{StaticResource HeaderTextBlockStyle}" Text="Katakana" Foreground="Black" FontSize="24" VerticalAlignment="Center" Margin="0,12,0,0" TextWrapping="Wrap"/>
+                                <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Text="カタカナ" Foreground="Gray" FontSize="16" VerticalAlignment="Center" Margin="0,0,0,12"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <Interactivity:Interaction.Behaviors>
+                            <Core:EventTriggerBehavior EventName="Tapped">
+                                <Core:InvokeCommandAction Command="{Binding CommandNavToKanaFlashcardPage}" CommandParameter="1"/>
+                            </Core:EventTriggerBehavior>
+                        </Interactivity:Interaction.Behaviors>
+                    </GridViewItem>
+                    <GridViewItem Margin="0">
+                        <StackPanel Width="340" Margin="12" Background="White" BorderBrush="LightGray" BorderThickness="0.8" Orientation="Horizontal">
+                            <TextBlock FontFamily="Yu Gothic UI" Text="磯" VerticalAlignment="Center" Foreground="#00b294" FontSize="36" Margin="20,0,0,0"/>
+                            <StackPanel VerticalAlignment="Center" Margin="16,0,0,0">
+                                <TextBlock  Style="{StaticResource HeaderTextBlockStyle}" Text="JLPT 1 Kanji" Foreground="Black" FontSize="24" VerticalAlignment="Center" Margin="0,12,0,0" TextWrapping="Wrap"/>
+                                <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Text="JLPT１" Foreground="Gray" FontSize="16" VerticalAlignment="Center" Margin="0,0,0,12"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <Interactivity:Interaction.Behaviors>
+                            <Core:EventTriggerBehavior EventName="Tapped">
+                                <Core:InvokeCommandAction Command="{Binding CommandNavToKanjiFlashcardPage}" CommandParameter="1"/>
+                            </Core:EventTriggerBehavior>
+                        </Interactivity:Interaction.Behaviors>
+                    </GridViewItem>
+                    <GridViewItem Margin="0">
+                        <StackPanel Width="340" Margin="12" Background="White" BorderBrush="LightGray" BorderThickness="0.8" Orientation="Horizontal">
+                            <TextBlock FontFamily="Yu Gothic UI" Text="囲" VerticalAlignment="Center" Foreground="#00b294" FontSize="36" Margin="20,0,0,0"/>
+                            <StackPanel VerticalAlignment="Center" Margin="16,0,0,0">
+                                <TextBlock  Style="{StaticResource HeaderTextBlockStyle}" Text="JLPT 2 Kanji" Foreground="Black" FontSize="24" VerticalAlignment="Center" Margin="0,12,0,0" TextWrapping="Wrap"/>
+                                <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Text="JLPT２" Foreground="Gray" FontSize="16" VerticalAlignment="Center" Margin="0,0,0,12"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <Interactivity:Interaction.Behaviors>
+                            <Core:EventTriggerBehavior EventName="Tapped">
+                                <Core:InvokeCommandAction Command="{Binding CommandNavToKanjiFlashcardPage}" CommandParameter="2"/>
+                            </Core:EventTriggerBehavior>
+                        </Interactivity:Interaction.Behaviors>
+                    </GridViewItem>
+                    <GridViewItem Margin="0">
+                        <StackPanel Width="340" Margin="12" Background="White" BorderBrush="LightGray" BorderThickness="0.8" Orientation="Horizontal">
+                            <TextBlock FontFamily="Yu Gothic UI" Text="夏" VerticalAlignment="Center" Foreground="#00b294" FontSize="36" Margin="20,0,0,0"/>
+                            <StackPanel VerticalAlignment="Center" Margin="16,0,0,0">
+                                <TextBlock  Style="{StaticResource HeaderTextBlockStyle}" Text="JLPT 3 Kanji" Foreground="Black" FontSize="24" VerticalAlignment="Center" Margin="0,12,0,0" TextWrapping="Wrap"/>
+                                <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Text="JLPT３" Foreground="Gray" FontSize="16" VerticalAlignment="Center" Margin="0,0,0,12"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <Interactivity:Interaction.Behaviors>
+                            <Core:EventTriggerBehavior EventName="Tapped">
+                                <Core:InvokeCommandAction Command="{Binding CommandNavToKanjiFlashcardPage}" CommandParameter="3"/>
+                            </Core:EventTriggerBehavior>
+                        </Interactivity:Interaction.Behaviors>
+                    </GridViewItem>
+                    <GridViewItem Margin="0">
+                        <StackPanel Width="340" Margin="12" Background="White" BorderBrush="LightGray" BorderThickness="0.8" Orientation="Horizontal">
+                            <TextBlock FontFamily="Yu Gothic UI" Text="円" VerticalAlignment="Center" Foreground="#00b294" FontSize="36" Margin="20,0,0,0"/>
+                            <StackPanel VerticalAlignment="Center" Margin="16,0,0,0">
+                                <TextBlock  Style="{StaticResource HeaderTextBlockStyle}" Text="JLPT 4 Kanji" Foreground="Black" FontSize="24" VerticalAlignment="Center" Margin="0,12,0,0" TextWrapping="Wrap"/>
+                                <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Text="JLPT４" Foreground="Gray" FontSize="16" VerticalAlignment="Center" Margin="0,0,0,12"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <Interactivity:Interaction.Behaviors>
+                            <Core:EventTriggerBehavior EventName="Tapped">
+                                <Core:InvokeCommandAction Command="{Binding CommandNavToKanjiFlashcardPage}" CommandParameter="4"/>
+                            </Core:EventTriggerBehavior>
+                        </Interactivity:Interaction.Behaviors>
+                    </GridViewItem>
+                </GridView>
             </PivotItem>
             <PivotItem Margin="12,-8,0,0">
                 <PivotItem.Header>
@@ -291,7 +518,7 @@
                         <FontIcon Glyph="&#xE115;" Width="25" Margin="0,0,5,0"></FontIcon>
                         <StackPanel Height="48">
                             <TextBlock FontSize="24">Settings</TextBlock>
-                            <TextBlock FontSize="8">せってい</TextBlock>
+                            <TextBlock FontSize="8" FontFamily="Yu Gothic UI">せってい</TextBlock>
                         </StackPanel>
                     </StackPanel>
                 </PivotItem.Header>
@@ -300,7 +527,7 @@
         </Pivot>
         <StackPanel Background="#00b294" Height="65" VerticalAlignment="Bottom">
 
-            <AutoSuggestBox Name="QueryBox" TextMemberPath="JpChar" SuggestionChosen="QueryBox_SuggestionChosen" Style="{StaticResource AutoSuggestBoxStyle1}" PlaceholderText="Search from here" Height="59" Foreground="White" VerticalAlignment="Bottom" FontSize="16" Margin="0,4,0,0" QuerySubmitted="QueryBox_QuerySubmitted">
+            <AutoSuggestBox Name="QueryBox" FontFamily="Yu Gothic UI" TextMemberPath="JpChar" SuggestionChosen="QueryBox_SuggestionChosen" Style="{StaticResource AutoSuggestBoxStyle1}" PlaceholderText="Search from here" Height="59" Foreground="White" VerticalAlignment="Bottom" FontSize="16" Margin="0,4,0,0" QuerySubmitted="QueryBox_QuerySubmitted">
                 <AutoSuggestBox.Resources>
                     <DataTemplate x:Key="DataTemplate1">
                         <StackPanel Name="autosuggestion_Listitem" Tag="{Binding EntryId}" Orientation="Horizontal">
@@ -310,7 +537,7 @@
                         </StackPanel>
                     </DataTemplate>
                 </AutoSuggestBox.Resources>
-                
+
                 <Interactivity:Interaction.Behaviors>
                     <!--<Core:EventTriggerBehavior EventName="SuggestionChosen">
                         <Core:InvokeCommandAction Command="{Binding CommandQueryWords}"
@@ -323,7 +550,7 @@
                         </Core:InvokeCommandAction>
                     </Core:EventTriggerBehavior>
                 </Interactivity:Interaction.Behaviors>
-                
+
                 <AutoSuggestBox.ItemTemplate>
                     <StaticResource ResourceKey="DataTemplate1"/>
                 </AutoSuggestBox.ItemTemplate>

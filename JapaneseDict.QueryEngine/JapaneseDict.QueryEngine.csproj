@@ -122,6 +122,7 @@
     <Compile Include="Models\IKanji.cs" />
     <Compile Include="Models\JmdictModels\Jmdict.cs" />
     <Compile Include="Models\JoyoKanji.cs" />
+    <Compile Include="Models\Kanjidict.cs" />
     <Compile Include="Models\MainDict.cs" />
     <Compile Include="Models\OnlineDict.cs" />
     <Compile Include="Models\UserDefDict.cs" />
@@ -131,14 +132,8 @@
     <Content Include="Properties\JapaneseDict.QueryEngine.rd.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\JapaneseDict.OnlineService\JapaneseDict.OnlineService.csproj">
-      <Project>{f385bdf1-4053-41a3-b9b7-cf504577c533}</Project>
-      <Name>JapaneseDict.OnlineService</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <SDKReference Include="SQLite.UAP.2015, Version=3.9.2">
-      <Name>SQLite for Universal App Platform</Name>
+    <SDKReference Include="SQLite.UWP.2015, Version=3.16.2">
+      <Name>SQLite for Universal Windows Platform</Name>
     </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

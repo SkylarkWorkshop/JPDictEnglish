@@ -68,14 +68,14 @@ namespace JapaneseDict.GUI
 
         private void shareEverydaySentence_Btn_Click(object sender, RoutedEventArgs e)
         {
-            JapaneseDict.Util.SharingHelper.ShowShareUI("Sentence sharing", ((Button)sender).Tag.ToString());
+            JapaneseDict.Util.SharingHelper.ShowShareUI("每日一句分享", ((Button)sender).Tag.ToString());
         }
 
         private async void showNotesEverydaySentence_Btn_Click(object sender, RoutedEventArgs e)
         {
             if (((Button)sender).Tag != null)
             {
-                await new MessageDialog(((Button)sender).Tag.ToString().Replace("<br />", "\n"), "Comment").ShowAsync();
+                await new MessageDialog(((Button)sender).Tag.ToString().Replace("<br />", "\n"), "注释").ShowAsync();
             }
 
         }
@@ -104,13 +104,12 @@ namespace JapaneseDict.GUI
         MainPage_Model vm = new MainPage_Model();
         private void MVVMPage_Loaded(object sender, RoutedEventArgs e)
         {
-
             Observable.FromEventPattern<AutoSuggestBoxTextChangedEventArgs>(this.QueryBox, "TextChanged").Throttle(TimeSpan.FromMilliseconds(900)).Subscribe(async x =>
                             await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
-                             {
-                                 this.QueryBox.ItemsSource = await QueryEngine.JmdictQueryEngine.QueryForPreviewAsync(QueryBox.Text);
-                                 //await Task.Delay(500);
-                             }));
+                            {
+                                this.QueryBox.ItemsSource = await QueryEngine.JmdictQueryEngine.QueryForPreviewAsync(QueryBox.Text);
+                                //await Task.Delay(500);
+                            }));
             this.QueryBox.Tag = null;
         }
 
@@ -130,14 +129,18 @@ namespace JapaneseDict.GUI
             this.mediaEle.Source = null;
             this.mediaEle.Stop();
             StopNHKRadiosPlay_Btn.Visibility = Visibility.Collapsed;
+            ResumeNHKRadiosPlay_Btn.Visibility = Visibility.Collapsed;
             this.listeningPosition_Slider.Visibility = Visibility.Collapsed;
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            
+
             base.OnNavigatedTo(e);
             this.mediaEle.Stop();
-
+            if (e.Parameter != null & e.Parameter.ToString() == "update")
+            {
+                this.mainPivot.SelectedIndex = 4;
+            }
         }
         private async void playNHKRadio_Btn_Click(object sender, RoutedEventArgs e)
         {
@@ -153,17 +156,17 @@ namespace JapaneseDict.GUI
                     mediaEle.Source = new Uri(tag, UriKind.Absolute);
                     mediaEle.Position = TimeSpan.FromMilliseconds(0);
 
-                    mediaEle.Play() ;
+                    mediaEle.Play();
 
                     StopNHKRadiosPlay_Btn.Visibility = Visibility.Visible;
                     listeningPosition_Slider.Visibility = Visibility.Visible;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await new MessageDialog("Detail:\n\n" + ex.ToString() + "\n\nYou can send the error data and your screenshot to us by clicking the 'feedback' button in settings page.", "Error").ShowAsync();
             }
-           
+
         }
         private void translate_frame_Loaded(object sender, RoutedEventArgs e)
         {
@@ -205,7 +208,6 @@ namespace JapaneseDict.GUI
             mediaEle.Pause();
             StopNHKRadiosPlay_Btn.Visibility = Visibility.Collapsed;
             ResumeNHKRadiosPlay_Btn.Visibility = Visibility.Visible;
-            //listeningPosition_Slider.Visibility = Visibility.Collapsed;
         }
 
         private void QueryBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
@@ -216,13 +218,30 @@ namespace JapaneseDict.GUI
 
             if (suggest.Result == "No local definitions found.")
             {
-                sender.Tag = new SearchTerm() { EntryId = -1, Keyword = suggest.JpChar,IsFromSuggestion=true };
+                sender.Tag = new SearchTerm() { EntryId = -1, Keyword = suggest.JpChar, IsFromSuggestion = true };
             }
             else
             {
-                sender.Tag = new SearchTerm() { EntryId = suggest.EntryId, Keyword = suggest.JpChar,IsFromSuggestion=true };
+                sender.Tag = new SearchTerm() { EntryId = suggest.EntryId, Keyword = suggest.JpChar, IsFromSuggestion = true };
             }
-            
+
+        }
+        private void QueryBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            if (!string.IsNullOrWhiteSpace(sender.Text))
+            {
+                if (sender.Tag is SearchTerm)
+                {
+                    if ((sender.Tag as SearchTerm).IsFromSuggestion != true)
+                    {
+                        sender.Tag = new SearchTerm() { EntryId = -1, Keyword = sender.Text, IsFromSuggestion = false };
+                    }
+                }
+                else
+                {
+                    sender.Tag = new SearchTerm() { EntryId = -1, Keyword = sender.Text, IsFromSuggestion = false };
+                }
+            }
         }
 
         private void adControl_Loaded(object sender, RoutedEventArgs e)
@@ -238,25 +257,6 @@ namespace JapaneseDict.GUI
             StopNHKRadiosPlay_Btn.Visibility = Visibility.Collapsed;
             listeningPosition_Slider.Visibility = Visibility.Collapsed;
         }
-
-        private void QueryBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-        {
-            if (!string.IsNullOrWhiteSpace(sender.Text))
-            {
-                if(sender.Tag is SearchTerm)
-                {
-                    if((sender.Tag as SearchTerm).IsFromSuggestion!=true)
-                    {
-                        sender.Tag = new SearchTerm() { EntryId = -1, Keyword = sender.Text,IsFromSuggestion=false };
-                    }
-                }
-                else
-                {
-                    sender.Tag = new SearchTerm() { EntryId = -1, Keyword = sender.Text, IsFromSuggestion = false };
-                }
-            }
-        }
-
         private void ResumeNHKRadiosPlay_Btn_Click(object sender, RoutedEventArgs e)
         {
             mediaEle.Play();

@@ -1,24 +1,22 @@
-﻿using System;
+﻿using JapaneseDict.Models;
+using SQLite.Net.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 
 namespace JapaneseDict.Models
 {
-    public class JoyoKanji
+    public class Kanjidict : IKanji
     {
         public string Grade
         {
             get;set;
         }
 
-        public string Hantaiji
-        {
-            get; set;
-        }
-
-        public int ID
+        public string Jlpt
         {
             get; set;
         }
@@ -28,14 +26,21 @@ namespace JapaneseDict.Models
             get; set;
         }
 
-        public string Reading
+        public string KunReading
         {
             get; set;
         }
 
-        public int Strokes
+        public string OnReading
         {
             get; set;
         }
+
+        public string Strokes
+        {
+            get; set;
+        }
+        [Ignore]
+        public Visibility ShowReading { get; set; } = Visibility.Visible;
     }
 }

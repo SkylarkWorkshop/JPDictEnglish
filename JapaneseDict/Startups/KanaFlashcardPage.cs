@@ -16,17 +16,17 @@ namespace MVVMSidekick.Startups
 {
     internal static partial class StartupFunctions
     {
-        static Action HiraganaRecitePageConfig =
-           CreateAndAddToAllConfig(ConfigHiraganaRecitePage);
+        static Action KanaFlashcardPageConfig =
+           CreateAndAddToAllConfig(ConfigKanaFlashcardPage);
 
-        public static void ConfigHiraganaRecitePage()
+        public static void ConfigKanaFlashcardPage()
         {
-            ViewModelLocator<HiraganaRecitePage_Model>
+            ViewModelLocator<KanaFlashcardPage_Model>
                 .Instance
                 .Register(context =>
-                    new HiraganaRecitePage_Model())
+                    new KanaFlashcardPage_Model())
                 .GetViewMapper()
-                .MapToDefault<HiraganaRecitePage>();
+                .MapToDefault<KanaFlashcardPage>();
 
         }
     }

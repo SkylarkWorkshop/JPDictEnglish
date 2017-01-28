@@ -122,7 +122,7 @@ namespace JapaneseDict.GUI.ViewModels
                         vm,
                         async e =>
                         {
-                            (Window.Current.Content as Frame).Navigate(typeof(HiraganaRecitePage));
+                            (Window.Current.Content as Frame).Navigate(typeof(FeedbackPage));
                             //Todo: Add NavToFeedbackPage logic here, or
                             await MVVMSidekick.Utilities.TaskExHelper.Yield();
                         })

@@ -21,8 +21,11 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using System.Collections.ObjectModel;
+using JapaneseDict.Models;
 using Windows.Phone.UI.Input;
 using Windows.UI.Core;
+using JapaneseDict.GUI.Extensions;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -31,33 +34,36 @@ namespace JapaneseDict.GUI
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class HiraganaRecitePage : MVVMPage
+    public sealed partial class KanjiFlashcardPage : MVVMPage
     {
-	
 
 
-		public HiraganaRecitePage()
+
+        public KanjiFlashcardPage()
         {
 
-			this.InitializeComponent();
+            this.InitializeComponent();
             this.RegisterPropertyChangedCallback(ViewModelProperty, (_, __) =>
             {
-                StrongTypeViewModel = this.ViewModel as HiraganaRecitePage_Model;
+                StrongTypeViewModel = this.ViewModel as KanjiFlashcardPage_Model;
             });
-            StrongTypeViewModel = this.ViewModel as HiraganaRecitePage_Model;
-            
+            StrongTypeViewModel = this.ViewModel as KanjiFlashcardPage_Model;
         }
 
 
-        public HiraganaRecitePage_Model StrongTypeViewModel
+        public KanjiFlashcardPage_Model StrongTypeViewModel
         {
-            get { return (HiraganaRecitePage_Model)GetValue(StrongTypeViewModelProperty); }
+            get { return (KanjiFlashcardPage_Model)GetValue(StrongTypeViewModelProperty); }
             set { SetValue(StrongTypeViewModelProperty, value); }
         }
 
         public static readonly DependencyProperty StrongTypeViewModelProperty =
-                    DependencyProperty.Register("StrongTypeViewModel", typeof(HiraganaRecitePage_Model ), typeof(HiraganaRecitePage), new PropertyMetadata(null));
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+                    DependencyProperty.Register("StrongTypeViewModel", typeof(KanjiFlashcardPage_Model), typeof(KanjiFlashcardPage), new PropertyMetadata(null));
+
+
+
+
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             EnableBackButtonOnTitleBar((sender, args) =>
@@ -74,19 +80,27 @@ namespace JapaneseDict.GUI
             {
                 HardwareButtons.BackPressed += HardwareButtons_BackPressed;
             }
-            JapaneseDict.Util.KanaReciteHelper.ResetHiragana();
-            HiraganaRecitePage_Model vm = new ViewModels.HiraganaRecitePage_Model();
-            vm.Current = 0;
-            vm.Hiraganas = new List<string>();
-            vm.Romajis = new List<string>();
-            for (int i = 0; i < 30; i++)
+            if (e.Parameter!=null)
             {
-                var kana = JapaneseDict.Util.KanaReciteHelper.GetRandomHiragana();
-                vm.Hiraganas.Add(kana.Key);
-                vm.Romajis.Add(kana.Value);
+                int jlpt = 0;
+                bool result = Int32.TryParse(e.Parameter.ToString(), out jlpt);
+                if(result)
+                {
+                    var kanjires = await QueryEngine.QueryEngine.KanjiDictQueryEngine.QueryAsync(jlpt);
+                    kanjires.Shuffle();
+                    this.ViewModel = new KanjiFlashcardPage_Model() { Kanji = new ObservableCollection<Kanjidict>(kanjires) };
+                }
             }
-            vm.CurrentHiragana = vm.Hiraganas[vm.Current];
-            this.ViewModel = vm;
+            
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            if (Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
+            {
+                HardwareButtons.BackPressed -= HardwareButtons_BackPressed;
+            }
         }
         private void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
         {
@@ -108,19 +122,17 @@ namespace JapaneseDict.GUI
             var currentView = SystemNavigationManager.GetForCurrentView();
             currentView.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
         }
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            base.OnNavigatedFrom(e);
-            if (Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.Phone.UI.Input.HardwareButtons"))
-            {
-                HardwareButtons.BackPressed -= HardwareButtons_BackPressed;
 
-            }
+        private void showReading_item_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            (sender as UIElement).Visibility = Visibility.Collapsed;
+            hideReading_item.Visibility = Visibility.Visible;
         }
 
-        private void pageRoot_Loaded(object sender, RoutedEventArgs e)
+        private void hideReading_item_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            
+            (sender as UIElement).Visibility = Visibility.Collapsed;
+            showReading_item.Visibility = Visibility.Visible;
         }
     }
 }

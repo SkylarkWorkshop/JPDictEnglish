@@ -21,7 +21,7 @@ namespace JapaneseDict.GUI.ViewModels
         public MainPage_Model()
         {
 
-            if (IsInDesignMode )
+            if (IsInDesignMode)
             {
                 Title = "Title is a little different in Design mode";
             }
@@ -41,7 +41,7 @@ namespace JapaneseDict.GUI.ViewModels
             for (int i = 0; i < 3; i++)
             {
                 this.EverdaySentenceList.Add((await JapaneseDict.OnlineService.JsonHelper.GetEverydaySentence(i)));
-               
+
             }
 
         }
@@ -58,7 +58,7 @@ namespace JapaneseDict.GUI.ViewModels
             this.NHKListeningSlow = new ObservableCollection<NHKRadios>();
             this.NHKListeningNormal = new ObservableCollection<NHKRadios>();
             this.NHKListeningFast = new ObservableCollection<NHKRadios>();
-            for (int i = 0; i < await OnlineService.JsonHelper.GetNHKRadiosItemsCount()-1; i++)
+            for (int i = 0; i < await OnlineService.JsonHelper.GetNHKRadiosItemsCount() - 1; i++)
             {
                 this.NHKListeningSlow.Add(await JsonHelper.GetNHKRadios(i, "slow"));
                 this.NHKListeningNormal.Add(await JsonHelper.GetNHKRadios(i, "normal"));
@@ -88,14 +88,102 @@ namespace JapaneseDict.GUI.ViewModels
                 //SQLiteConnection conn;
                 cmd.DoExecuteUIBusyTask(
                         vm,
-                        async e =>
-                        {
-
+                        async e => {
                             if ((e.EventArgs.Parameter is SearchTerm) && (e.EventArgs.Parameter.ToString() != "Windows.UI.Xaml.Controls.AutoSuggestBoxQuerySubmittedEventArgs"))
                             {
                                 Frame rootFrame = Window.Current.Content as Frame;
                                 rootFrame.Navigate(typeof(ResultPage), e.EventArgs.Parameter as SearchTerm);
                             }
+                            await MVVMSidekick.Utilities.TaskExHelper.Yield();
+                        })
+                    .DoNotifyDefaultEventRouter(vm, commandId)
+                    .Subscribe()
+                    .DisposeWith(vm);
+
+                var cmdmdl = cmd.CreateCommandModel(resource);
+
+                cmdmdl.ListenToIsUIBusy(
+                    model: vm,
+                    canExecuteWhenBusy: false);
+                return cmdmdl;
+            };
+
+        #endregion
+
+        public CommandModel<ReactiveCommand, String> CommandNavToKanjiFlashcardPage
+        {
+            get { return _CommandNavToKanjiFlashcardPageLocator(this).Value; }
+            set { _CommandNavToKanjiFlashcardPageLocator(this).SetValueAndTryNotify(value); }
+        }
+        #region Property CommandModel<ReactiveCommand, String> CommandNavToKanjiFlashcardPage Setup        
+
+        protected Property<CommandModel<ReactiveCommand, String>> _CommandNavToKanjiFlashcardPage = new Property<CommandModel<ReactiveCommand, String>> { LocatorFunc = _CommandNavToKanjiFlashcardPageLocator };
+        static Func<BindableBase, ValueContainer<CommandModel<ReactiveCommand, String>>> _CommandNavToKanjiFlashcardPageLocator = RegisterContainerLocator<CommandModel<ReactiveCommand, String>>(nameof(CommandNavToKanjiFlashcardPage), model => model.Initialize(nameof(CommandNavToKanjiFlashcardPage), ref model._CommandNavToKanjiFlashcardPage, ref _CommandNavToKanjiFlashcardPageLocator, _CommandNavToKanjiFlashcardPageDefaultValueFactory));
+        static Func<BindableBase, CommandModel<ReactiveCommand, String>> _CommandNavToKanjiFlashcardPageDefaultValueFactory =
+            model =>
+            {
+                var resource = nameof(CommandNavToKanjiFlashcardPage);           // Command resource  
+                var commandId = nameof(CommandNavToKanjiFlashcardPage);
+                var vm = CastToCurrentType(model);
+                var cmd = new ReactiveCommand(canExecute: true) { ViewModel = model }; //New Command Core
+
+                cmd.DoExecuteUIBusyTask(
+                        vm,
+                        async e =>
+                        {
+                            var parm = e.EventArgs.Parameter.ToString();
+                            int jlpt = 0;
+                            bool result = Int32.TryParse(parm, out jlpt);
+                            if (result)
+                            {
+                                (Window.Current.Content as Frame).Navigate(typeof(KanjiFlashcardPage), jlpt);
+                            }
+                            //Todo: Add NavToKanjiFlashcardPage logic here, or
+                            await MVVMSidekick.Utilities.TaskExHelper.Yield();
+                        })
+                    .DoNotifyDefaultEventRouter(vm, commandId)
+                    .Subscribe()
+                    .DisposeWith(vm);
+
+                var cmdmdl = cmd.CreateCommandModel(resource);
+
+                cmdmdl.ListenToIsUIBusy(
+                    model: vm,
+                    canExecuteWhenBusy: false);
+                return cmdmdl;
+            };
+
+        #endregion
+
+        public CommandModel<ReactiveCommand, String> CommandNavToKanaFlashcardPage
+        {
+            get { return _CommandNavToKanaFlashcardPageLocator(this).Value; }
+            set { _CommandNavToKanaFlashcardPageLocator(this).SetValueAndTryNotify(value); }
+        }
+        #region Property CommandModel<ReactiveCommand, String> CommandNavToKanaFlashcardPage Setup        
+
+        protected Property<CommandModel<ReactiveCommand, String>> _CommandNavToKanaFlashcardPage = new Property<CommandModel<ReactiveCommand, String>> { LocatorFunc = _CommandNavToKanaFlashcardPageLocator };
+        static Func<BindableBase, ValueContainer<CommandModel<ReactiveCommand, String>>> _CommandNavToKanaFlashcardPageLocator = RegisterContainerLocator<CommandModel<ReactiveCommand, String>>(nameof(CommandNavToKanaFlashcardPage), model => model.Initialize(nameof(CommandNavToKanaFlashcardPage), ref model._CommandNavToKanaFlashcardPage, ref _CommandNavToKanaFlashcardPageLocator, _CommandNavToKanaFlashcardPageDefaultValueFactory));
+        static Func<BindableBase, CommandModel<ReactiveCommand, String>> _CommandNavToKanaFlashcardPageDefaultValueFactory =
+            model =>
+            {
+                var resource = nameof(CommandNavToKanaFlashcardPage);           // Command resource  
+                var commandId = nameof(CommandNavToKanaFlashcardPage);
+                var vm = CastToCurrentType(model);
+                var cmd = new ReactiveCommand(canExecute: true) { ViewModel = model }; //New Command Core
+
+                cmd.DoExecuteUIBusyTask(
+                        vm,
+                        async e =>
+                        {
+                            var parm = e.EventArgs.Parameter.ToString();
+                            int index = 0;
+                            bool result = Int32.TryParse(parm, out index);
+                            if (result)
+                            {
+                                (Window.Current.Content as Frame).Navigate(typeof(KanaFlashcardPage), index);
+                            }
+                            //Todo: Add NavToKanaFlashcardPage logic here, or
                             await MVVMSidekick.Utilities.TaskExHelper.Yield();
                         })
                     .DoNotifyDefaultEventRouter(vm, commandId)
@@ -120,7 +208,7 @@ namespace JapaneseDict.GUI.ViewModels
         #region Property String Title Setup
         protected Property<String> _Title = new Property<String> { LocatorFunc = _TitleLocator };
         static Func<BindableBase, ValueContainer<String>> _TitleLocator = RegisterContainerLocator<String>("Title", model => model.Initialize("Title", ref model._Title, ref _TitleLocator, _TitleDefaultValueFactory));
-        static Func<String> _TitleDefaultValueFactory = ()=>"Title is Here";
+        static Func<String> _TitleDefaultValueFactory = () => "Title is Here";
         #endregion
 
 
@@ -153,7 +241,7 @@ namespace JapaneseDict.GUI.ViewModels
             model =>
             {
                 var vm = CastToCurrentType(model);
-                
+
                 //TODO: Add the logic that produce default value from vm current status.
                 return default(ObservableCollection<NHKNews>);
             };

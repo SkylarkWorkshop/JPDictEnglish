@@ -165,5 +165,12 @@ namespace JapaneseDict.QueryEngine
             });
 
         }
+        public async void AddToNotebook(int id)
+        {
+            var kele = await QueryKEleAsync(id);
+            var rele = await QueryREleAsync(id);
+            var sense = await QuerySensesAsync(id);
+
+        }
     }
 }

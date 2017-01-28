@@ -58,7 +58,6 @@ namespace JapaneseDict.GUI.ViewModels
                 QueryAll(_keyword);
             }
             _kanjikeyword = reg.Matches(_keyword);
-            QueryKanji();
             EnableBackButtonOnTitleBar((sender, args) =>
             {
                 BindableBase model=this;
@@ -98,11 +97,6 @@ namespace JapaneseDict.GUI.ViewModels
                 }
             }
             this.Result = new ObservableCollection<SearchResult>(res);
-        }
-        private async void QueryKanji()
-        {
-            this.kanjiresults = await QueryEngine.QueryEngine.KanjiDictQueryEngine.QueryForUIAsync(_kanjikeyword);
-            this.KanjiResults = kanjiresults;
         }
         //private async void QueryWord()
         //{
@@ -195,7 +189,7 @@ namespace JapaneseDict.GUI.ViewModels
                         async e =>
                         {
                             vm.IsOnlineQueryBusy = true;
-                            vm.OnlineResult = await QueryEngine.QueryEngine.OnlineQueryEngine.Query(vm._keyword);
+                            vm.OnlineResult = await OnlineQueryEngine.Query(vm.Result.First().Kele.First().Keb);
                             //Todo: Add QueryOnline logic here, or
                             await MVVMSidekick.Utilities.TaskExHelper.Yield();
                             vm.IsOnlineQueryBusy = false;
